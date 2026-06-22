@@ -1,42 +1,266 @@
-#!/bin/bash
-set -e
-DEST="/var/www/ai-readiness"
+// ─────────────────────────────────────────────────────────────────────────────
+// INDUSTRY CONFIGURATIONS
+// Keys: base | automotive | bfsi | retail | healthcare | ict
+// Slugs match URL paths: /ai-readiness/, /ai-readiness/automotive/, etc.
+// ─────────────────────────────────────────────────────────────────────────────
 
-echo "── Creating destination directories ───────────────────────────────"
-sudo mkdir -p "$DEST/shared" "$DEST/base" "$DEST/automotive" \
-              "$DEST/bfsi" "$DEST/retail" "$DEST/healthcare" "$DEST/ict"
+window.INDUSTRY_CONFIGS = {
 
-echo "── Copying shared assets ──────────────────────────────────────────"
-sudo cp shared/industry-configs.js "$DEST/shared/"
-sudo cp shared/engine.js           "$DEST/shared/"
+  // ── BASE (industry-agnostic) ──────────────────────────────────────────────
+  base: {
+    slug: "base",
+    label: "",
+    badgeText: "Enterprise · 2026",
+    headerLabel: "AI Readiness Benchmark",
+    footerLabel: "AI Readiness Benchmark",
+    heroStat: "74%",
+    heroStatContext: "of enterprise AI pilots never reach production.",
+    heroHeadline: "Where does your organisation stand on AI readiness",
+    heroSub: "The failure rate isn't a technology problem — it's a readiness problem. Gaps in strategy, data quality, and operational integration that no AI vendor will flag. This benchmark assesses your organisation across 7 dimensions and tells you exactly where you stand.",
+    dimNames: [
+      "Strategic AI Intent",
+      "Governance & Risk",
+      "Data Foundation",
+      "Operations & Process",
+      "Use Case & Adoption",
+      "Talent & Change",
+      "Ecosystem & Benchmarking"
+    ],
+    gapMessages: [
+      "Leadership may not share clarity on AI priorities. This misalignment slows every downstream initiative.",
+      "Without AI-specific governance, every model in production carries unmanaged regulatory and reputational risk.",
+      "Your data may not be fit for the AI outcomes you are targeting. Poor data quality is the most common cause of pilot failure.",
+      "AI outputs are likely not embedded in daily decisions. Workflow redesign is the bridge between pilots and production value.",
+      "It may be difficult to distinguish between use cases delivering value and those stalled as pilots.",
+      "Teams may lack the AI literacy to act on model outputs — a significant adoption barrier even when technology is ready.",
+      "Lack of peer benchmarking risks an AI agenda shaped by vendors rather than business strategy.",
+    ],
+    questions: [
+      { dim:1, dimName:"Strategic AI Intent",      text:"Our senior leadership team has a shared, documented view of the top AI priorities for this financial year." },
+      { dim:1, dimName:"Strategic AI Intent",      text:"We have defined what AI will not be used for and this is understood across business and technology teams." },
+      { dim:2, dimName:"Governance & Risk",        text:"We have an AI-specific risk and governance framework that is separate from our general IT risk policies." },
+      { dim:2, dimName:"Governance & Risk",        text:"Every AI model in production has a defined owner, monitoring plan, and human oversight protocol." },
+      { dim:3, dimName:"Data Foundation",          text:"We have assessed the quality and AI-readiness of our core data assets." },
+      { dim:3, dimName:"Data Foundation",          text:"Our data is accessible, governed, and structured to support the AI use cases we are currently pursuing." },
+      { dim:4, dimName:"Operations & Process",     text:"Key business workflows have been redesigned to act on AI outputs — teams don't just receive recommendations, they act on them." },
+      { dim:5, dimName:"Use Case & Adoption",      text:"We can clearly distinguish between AI use cases generating measurable business value and those stalled as pilots." },
+      { dim:6, dimName:"Talent & Change",          text:"Our business teams (not just data science) have sufficient AI literacy to interpret and act on AI outputs." },
+      { dim:7, dimName:"Ecosystem & Benchmarking", text:"We benchmark our AI maturity against peer organisations on a structured, periodic basis." },
+    ],
+  },
 
-echo "── Copying industry index pages ───────────────────────────────────"
-sudo cp base/index.html        "$DEST/base/"
-sudo cp automotive/index.html  "$DEST/automotive/"
-sudo cp bfsi/index.html        "$DEST/bfsi/"
-sudo cp retail/index.html      "$DEST/retail/"
-sudo cp healthcare/index.html  "$DEST/healthcare/"
-sudo cp ict/index.html         "$DEST/ict/"
+  // ── AUTOMOTIVE & MANUFACTURING ────────────────────────────────────────────
+  automotive: {
+    slug: "automotive",
+    label: "Automotive & Manufacturing",
+    badgeText: "Automotive & Manufacturing · 2026",
+    headerLabel: "AI Readiness Benchmark · Automotive & Manufacturing",
+    footerLabel: "AI Readiness Benchmark · Automotive & Manufacturing Edition",
+    heroStat: "69%",
+    heroStatContext: "of automotive and manufacturing AI programmes fail to reach production at scale.",
+    heroHeadline: "69% of automotive AI programmes never reach the production floor. Where does your organisation stand",
+    heroSub: "From software-defined vehicles to predictive maintenance, AI in automotive and manufacturing is under pressure to deliver. The gap between ambition and scale isn't technical — it's organisational. Siloed OT/IT environments, disconnected supplier data, and shopfloor teams not built into the rollout. This benchmark shows you exactly where you stand.",
+    dimNames: [
+      "Strategic AI Intent",
+      "Governance & Safety",
+      "Data Foundation",
+      "Shopfloor & Process Integration",
+      "Use Case & Value Realisation",
+      "Talent & Change",
+      "Ecosystem & Benchmarking"
+    ],
+    gapMessages: [
+      "Plant, product, and corporate leadership may not share clarity on AI priorities across the vehicle lifecycle and factory floor — misalignment here fragments investment and stalls programmes.",
+      "Without AI-specific governance covering OT/IT security, ADAS validation standards (ISO 26262, UNECE), and product liability, every model on the production floor carries unmanaged safety and audit risk.",
+      "Your sensor, MES, ERP, warranty, and telemetry data may not be AI-ready. Siloed OT/IT environments and inconsistent asset tagging are the most common causes of manufacturing AI failure.",
+      "AI outputs are likely not embedded in production scheduling, quality sign-off, or maintenance workflows. Without operator-level process redesign, model recommendations remain advisory.",
+      "It may be difficult to distinguish between AI deployments reducing defect rates, unplanned downtime, or warranty cost and those still running in evaluation mode.",
+      "Operators, maintenance engineers, and production supervisors may lack the AI literacy to trust and act on predictive outputs — a critical barrier to shopfloor adoption.",
+      "Dependence on OEM, Tier-1, and MES vendor AI tooling without independent benchmarking risks an AI agenda shaped by equipment suppliers rather than your operational strategy.",
+    ],
+    questions: [
+      { dim:1, dimName:"Strategic AI Intent",              text:"Our plant, product, and corporate leadership share a documented view of AI priorities — across predictive maintenance, quality control, ADAS, and supply chain — for this financial year." },
+      { dim:1, dimName:"Strategic AI Intent",              text:"We have defined what AI will not automate without human sign-off (e.g. production line shutdowns, safety-critical ADAS decisions) and this boundary is understood across engineering, operations, and technology teams." },
+      { dim:2, dimName:"Governance & Safety",              text:"We have an AI-specific governance framework covering OT/IT security, product safety obligations (ISO 26262, UNECE regulations), model liability, and production audit requirements." },
+      { dim:2, dimName:"Governance & Safety",              text:"Every AI model on the production floor or in the vehicle — including quality vision systems, predictive maintenance, and ADAS functions — has a defined owner, monitoring plan, and operator override protocol." },
+      { dim:3, dimName:"Data Foundation",                  text:"We have assessed the AI-readiness of our sensor streams, MES records, ERP data, warranty claims, and vehicle telemetry — including where OT and IT data environments remain siloed." },
+      { dim:3, dimName:"Data Foundation",                  text:"Our operational and vehicle data is accessible, consistently tagged, and structured to support use cases such as defect detection, downtime prediction, ADAS simulation, and supplier risk scoring." },
+      { dim:4, dimName:"Shopfloor & Process Integration",  text:"Production, maintenance, and quality workflows have been explicitly redesigned so operators and engineers act on AI recommendations — not just receive exception alerts or periodic exception reports." },
+      { dim:5, dimName:"Use Case & Value Realisation",     text:"We can clearly distinguish between AI deployments generating measurable reductions in defect rates, unplanned downtime, or warranty cost and those still running in pilot or evaluation mode." },
+      { dim:6, dimName:"Talent & Change",                  text:"Operators, maintenance engineers, and production supervisors have sufficient AI literacy to trust, interpret, and act on predictive model outputs — and know when to escalate or override." },
+      { dim:7, dimName:"Ecosystem & Benchmarking",         text:"We benchmark our AI maturity against peer OEMs, Tier-1 suppliers, and Industry 4.0 leaders on a structured, periodic basis — beyond what our technology partners and equipment vendors report." },
+    ],
+  },
 
-echo "── Setting permissions ────────────────────────────────────────────"
-sudo chown -R www-data:www-data "$DEST"
-sudo chmod -R 755 "$DEST"
+  // ── BANKING & INSURANCE ───────────────────────────────────────────────────
+  bfsi: {
+    slug: "bfsi",
+    label: "Banking & Insurance",
+    badgeText: "Banking & Insurance · 2026",
+    headerLabel: "AI Readiness Benchmark · Banking & Insurance",
+    footerLabel: "AI Readiness Benchmark · Banking & Insurance Edition",
+    heroStat: "73%",
+    heroStatContext: "of banking and insurance AI pilots never reach production.",
+    heroHeadline: "73% of banking and insurance AI pilots never reach production. Where does your organisation stand",
+    heroSub: "The failure rate isn't a technology problem — it's a readiness problem. Gaps in model governance, data quality, and regulatory alignment that no AI vendor will flag during a sales cycle. This benchmark assesses your organisation across 7 dimensions of AI readiness and tells you exactly where you stand.",
+    dimNames: [
+      "Strategic AI Intent",
+      "Regulatory Governance & Risk",
+      "Data Foundation",
+      "Operations & Process",
+      "Use Case & Adoption",
+      "Talent & Change",
+      "Ecosystem & Benchmarking"
+    ],
+    gapMessages: [
+      "Leadership may not share clarity on AI priorities across credit, fraud, compliance, and customer experience. In BFSI, where regulatory timelines intersect with product roadmaps, this misalignment stalls every downstream initiative.",
+      "Without AI-specific model risk governance, every model in production carries unmanaged regulatory and reputational exposure — particularly under RBI model risk guidelines, IRDAI directives, or global AML and fair lending obligations.",
+      "Your transaction, customer, policy, and claims data may not be AI-ready. Fragmented core banking or policy administration data is the most common cause of pilot failure in financial services.",
+      "AI outputs are likely not embedded in credit underwriting, fraud triage, claims decisions, or customer servicing workflows. Workflow redesign is what converts model output into business value.",
+      "It may be difficult to distinguish between AI use cases generating measurable P&L impact — reduced NPAs, lower loss ratios, higher conversion — and those stalled as PoCs in the data science team.",
+      "Relationship managers, underwriters, claims handlers, and operations staff may lack the AI literacy to act on model outputs — a critical adoption barrier in customer-facing and regulated roles.",
+      "Vendor dependency and lack of structured peer benchmarking risks an AI agenda shaped by core banking, insurance platform, and technology suppliers rather than your business strategy.",
+    ],
+    questions: [
+      { dim:1, dimName:"Strategic AI Intent",          text:"Our senior leadership shares a documented view of AI priorities — across credit risk, fraud detection, claims automation, compliance, and customer experience — for this financial year." },
+      { dim:1, dimName:"Strategic AI Intent",          text:"We have defined what AI will not be used for without mandatory human review (e.g. fully automated credit decisions, autonomous claims settlement above a threshold) and this is understood across business and technology teams." },
+      { dim:2, dimName:"Regulatory Governance & Risk", text:"We have an AI-specific model risk governance framework — separate from general IT risk — that accounts for regulatory obligations including RBI model risk guidelines, IRDAI directives, AML requirements, and fair lending or fair pricing obligations." },
+      { dim:2, dimName:"Regulatory Governance & Risk", text:"Every AI model in production — including credit scoring, fraud detection, and underwriting models — has a defined model owner, ongoing monitoring plan, performance degradation alert, and human override protocol." },
+      { dim:3, dimName:"Data Foundation",              text:"We have assessed the quality and AI-readiness of our core transaction, customer, policy, and claims data — including where data is siloed across legacy core banking or policy administration systems." },
+      { dim:3, dimName:"Data Foundation",              text:"Our data is accessible, governed, and structured to support AI use cases such as churn prediction, next-best-offer, claims fraud detection, and dynamic underwriting." },
+      { dim:4, dimName:"Operations & Process",         text:"Key workflows — credit underwriting, fraud triage, claims processing, or customer servicing — have been redesigned so teams act on AI recommendations rather than simply receiving them as optional reference data." },
+      { dim:5, dimName:"Use Case & Adoption",          text:"We can clearly distinguish between AI use cases generating measurable business value (reduced NPAs, lower loss ratios, higher conversion, faster claims resolution) and those that remain as proofs-of-concept." },
+      { dim:6, dimName:"Talent & Change",              text:"Relationship managers, underwriters, claims handlers, and operations teams — not just data science — have sufficient AI literacy to interpret model outputs and know when to escalate or override." },
+      { dim:7, dimName:"Ecosystem & Benchmarking",     text:"We benchmark our AI maturity against peer banks, insurers, and NBFCs on a structured, periodic basis — beyond benchmarks provided by our technology and platform vendors." },
+    ],
+  },
 
-echo "── Installing Nginx config ────────────────────────────────────────"
-# NOTE: If you already have a server block for netscribes.com, copy only
-# the location{} blocks into your existing config rather than installing
-# this as a second server{} block.
-sudo cp nginx-ai-readiness.conf /etc/nginx/sites-available/ai-readiness.conf
-[ ! -L /etc/nginx/sites-enabled/ai-readiness.conf ] && \
-  sudo ln -s /etc/nginx/sites-available/ai-readiness.conf /etc/nginx/sites-enabled/
+  // ── RETAIL & LOGISTICS ────────────────────────────────────────────────────
+  retail: {
+    slug: "retail",
+    label: "Retail & Logistics",
+    badgeText: "Retail & Logistics · 2026",
+    headerLabel: "AI Readiness Benchmark · Retail & Logistics",
+    footerLabel: "AI Readiness Benchmark · Retail & Logistics Edition",
+    heroStat: "68%",
+    heroStatContext: "of retail and logistics AI pilots fail to reach full production deployment.",
+    heroHeadline: "68% of retail and logistics AI pilots never make it to the shelf. Where does your organisation stand",
+    heroSub: "The failure isn't in the algorithm — it's in the foundation. Fragmented catalogue data, disconnected inventory and last-mile signals, and commercial teams that weren't built into the rollout. This benchmark shows you exactly where the gaps are across 7 dimensions.",
+    dimNames: [
+      "Strategic AI Intent",
+      "Governance & Risk",
+      "Data Foundation",
+      "Commercial & Ops Integration",
+      "Use Case & Value Realisation",
+      "Talent & Change",
+      "Ecosystem & Benchmarking"
+    ],
+    gapMessages: [
+      "Commercial, supply chain, and technology leadership may not share clarity on AI priorities across merchandising, pricing, demand, and fulfilment — misalignment means AI investments compete rather than compound.",
+      "Without AI-specific governance, personalisation models, dynamic pricing algorithms, and last-mile routing systems carry unmanaged bias, regulatory, and customer trust risk.",
+      "Your product catalogue, transaction history, customer behaviour, inventory, and last-mile data may not be AI-ready. Catalogue incompleteness and poor SKU attribution are the most common causes of retail AI failure.",
+      "AI outputs are likely not embedded in replenishment, markdown, promotional planning, or route optimisation decisions. Workflow redesign is what separates pilots from the decisions that drive margin.",
+      "It may be difficult to distinguish between AI use cases driving measurable improvement in conversion, basket size, inventory efficiency, or last-mile cost and those that remain proof-of-concepts.",
+      "Category managers, buyers, planners, and operations teams may lack the AI literacy to act on demand forecasts, personalisation outputs, and routing recommendations.",
+      "Dependence on platform recommendations — Amazon A9, Google Shopping, 3PL analytics — without independent benchmarking risks your AI agenda being defined by marketplace and logistics partners rather than your strategy.",
+    ],
+    questions: [
+      { dim:1, dimName:"Strategic AI Intent",              text:"Our commercial, supply chain, and technology leadership share a documented view of AI priorities — across demand forecasting, personalisation, pricing, and last-mile optimisation — for this financial year." },
+      { dim:1, dimName:"Strategic AI Intent",              text:"We have defined the boundaries of AI use — for example, which pricing or routing decisions require human review — and this is understood by both commercial and technology teams." },
+      { dim:2, dimName:"Governance & Risk",                text:"We have an AI-specific governance framework covering personalisation bias, dynamic pricing transparency, and data privacy obligations (DPDP, GDPR, platform marketplace rules)." },
+      { dim:2, dimName:"Governance & Risk",                text:"Every AI model in production — including recommendation engines, demand forecasting, and last-mile routing — has a defined owner, monitoring plan, and override or fallback protocol." },
+      { dim:3, dimName:"Data Foundation",                  text:"We have assessed the quality and AI-readiness of our product catalogue, transaction history, customer behaviour, inventory levels, and fulfilment data — including gaps in attribution and cross-channel consistency." },
+      { dim:3, dimName:"Data Foundation",                  text:"Our data is accessible and structured to support AI use cases such as stockout prediction, next-best-product recommendation, dynamic markdown optimisation, and last-mile route planning." },
+      { dim:4, dimName:"Commercial & Ops Integration",     text:"Key commercial and operations workflows — replenishment, markdown decisions, promotional planning, and route optimisation — have been redesigned so teams act on AI recommendations rather than traditional heuristics or spreadsheet models." },
+      { dim:5, dimName:"Use Case & Value Realisation",     text:"We can clearly distinguish between AI use cases driving measurable improvement in conversion rate, basket size, inventory efficiency, or last-mile cost and those still at proof-of-concept stage." },
+      { dim:6, dimName:"Talent & Change",                  text:"Category managers, buyers, demand planners, and logistics operations teams have sufficient AI literacy to interpret demand forecasts, personalisation outputs, and routing recommendations — and act on them." },
+      { dim:7, dimName:"Ecosystem & Benchmarking",         text:"We benchmark our AI maturity against peer retailers, D2C brands, and logistics operators on a structured, periodic basis — beyond the dashboards our marketplace, commerce platform, and 3PL partners provide." },
+    ],
+  },
 
-sudo nginx -t && sudo systemctl reload nginx
+  // ── LIFE SCIENCES & HEALTHCARE ────────────────────────────────────────────
+  healthcare: {
+    slug: "healthcare",
+    label: "Life Sciences & Healthcare",
+    badgeText: "Life Sciences & Healthcare · 2026",
+    headerLabel: "AI Readiness Benchmark · Life Sciences & Healthcare",
+    footerLabel: "AI Readiness Benchmark · Life Sciences & Healthcare Edition",
+    heroStat: "80%",
+    heroStatContext: "of healthcare and life sciences AI initiatives fail to scale beyond the pilot unit.",
+    heroHeadline: "80% of life sciences AI initiatives never scale beyond the pilot unit. Where does your organisation stand",
+    heroSub: "In life sciences and healthcare, AI failure isn't just a business problem — it is a patient safety problem. Gaps in clinical data governance, regulatory compliance, and clinical team readiness are what stop promising pilots from scaling. This benchmark shows you exactly where your organisation stands.",
+    dimNames: [
+      "Strategic AI Intent",
+      "Clinical Governance & Compliance",
+      "Data Foundation",
+      "Clinical & Ops Integration",
+      "Use Case & Outcomes Realisation",
+      "Talent & Change",
+      "Ecosystem & Benchmarking"
+    ],
+    gapMessages: [
+      "Clinical, research, and administrative leadership may not share clarity on AI priorities. In life sciences and healthcare, misalignment between IT, clinical, regulatory, and operations teams is the primary cause of failed deployments.",
+      "Without an AI-specific clinical governance framework, every diagnostic support model, drug discovery AI, or administrative automation carries unmanaged patient safety and regulatory risk — critical under CDSCO, FDA, EMA, CE marking, and HIPAA requirements.",
+      "Your EMR, imaging, genomics, claims, and clinical trial data may not be AI-ready. Interoperability gaps, inconsistent clinical coding, and consent constraints are the most common causes of healthcare AI failure.",
+      "AI outputs are likely not embedded in clinical pathways, pharmacovigilance processes, or administrative workflows. Embedding models into clinical decision support or drug safety systems requires explicit process redesign — not just model deployment.",
+      "It may be difficult to distinguish between AI use cases with measurable clinical or operational outcomes — reduced readmissions, faster trial recruitment, improved coding accuracy — and those still being evaluated in a single department.",
+      "Clinicians, research staff, nurses, and administrative teams may lack the AI literacy to correctly interpret model outputs — a direct patient safety risk when outputs influence care or drug safety decisions.",
+      "Dependence on EHR vendor AI modules, CRO platform analytics, and technology partner tooling without independent benchmarking risks a clinical AI agenda shaped by supplier roadmaps rather than your clinical and commercial strategy.",
+    ],
+    questions: [
+      { dim:1, dimName:"Strategic AI Intent",                  text:"Our clinical, research, and administrative leadership share a documented view of AI priorities — across diagnostics, drug discovery, patient flow, clinical trial optimisation, and pharmacovigilance — for this financial year." },
+      { dim:1, dimName:"Strategic AI Intent",                  text:"We have defined what AI will not be used for without mandatory human clinical review (e.g. autonomous diagnostic decisions, unreviewed drug safety signal generation) and this is understood across clinical, regulatory, and technology teams." },
+      { dim:2, dimName:"Clinical Governance & Compliance",     text:"We have an AI-specific clinical governance framework covering model validation, patient safety obligations, and regulatory requirements (CDSCO, FDA, EMA, MDR, HIPAA, GxP where applicable)." },
+      { dim:2, dimName:"Clinical Governance & Compliance",     text:"Every AI model in clinical or research use — including diagnostic support, patient risk scoring, and adverse event detection — has a defined clinical owner, ongoing monitoring plan, and mandatory human oversight or override protocol." },
+      { dim:3, dimName:"Data Foundation",                      text:"We have assessed the quality, completeness, consent status, and AI-readiness of our EMR, imaging, genomics, claims, and clinical trial data — including interoperability gaps across systems and sites." },
+      { dim:3, dimName:"Data Foundation",                      text:"Our clinical and research data is accessible, de-identified or consented where required, and structured to support AI use cases such as readmission prediction, imaging analysis, adverse event detection, and trial site selection." },
+      { dim:4, dimName:"Clinical & Ops Integration",           text:"Clinical pathways, pharmacovigilance processes, and administrative workflows have been explicitly redesigned to incorporate AI recommendations — clinicians and operations staff act on outputs rather than treating them as optional reference material." },
+      { dim:5, dimName:"Use Case & Outcomes Realisation",      text:"We can clearly distinguish between AI use cases with measurable clinical or operational outcomes (reduced length of stay, faster trial recruitment, improved coding accuracy, earlier adverse event detection) and those still in pilot evaluation." },
+      { dim:6, dimName:"Talent & Change",                      text:"Clinicians, research staff, nurses, and administrative teams have sufficient AI literacy to correctly interpret model outputs, apply appropriate clinical judgement, and know when to escalate or override." },
+      { dim:7, dimName:"Ecosystem & Benchmarking",             text:"We benchmark our AI maturity against peer health systems, pharma companies, and MedTech innovators on a structured, periodic basis — beyond what our EHR vendors, CRO platforms, and technology partners report." },
+    ],
+  },
 
-echo ""
-echo "✓ Live at:"
-echo "  /ai-readiness/              — All Industries (base)"
-echo "  /ai-readiness/automotive/   — Automotive & Manufacturing"
-echo "  /ai-readiness/bfsi/         — Banking & Insurance"
-echo "  /ai-readiness/retail/       — Retail & Logistics"
-echo "  /ai-readiness/healthcare/   — Life Sciences & Healthcare"
-echo "  /ai-readiness/ict/          — ICT & Media"
+  // ── ICT & MEDIA ───────────────────────────────────────────────────────────
+  ict: {
+    slug: "ict",
+    label: "ICT & Media",
+    badgeText: "ICT & Media · 2026",
+    headerLabel: "AI Readiness Benchmark · ICT & Media",
+    footerLabel: "AI Readiness Benchmark · ICT & Media Edition",
+    heroStat: "71%",
+    heroStatContext: "of ICT and media AI initiatives fail to reach full production at scale.",
+    heroHeadline: "71% of ICT and media AI initiatives never make it to production at scale. Where does your organisation stand",
+    heroSub: "Technology companies face a paradox: they adopt AI fastest, but most AI initiatives still fail to scale beyond a team or a product line. The barrier isn't technical capability — it's the absence of AI governance, product-grade data infrastructure, and the organisational readiness to ship AI as a reliable product. This benchmark shows you exactly where you stand.",
+    dimNames: [
+      "Strategic AI Intent",
+      "AI Product Governance & Risk",
+      "Data & Model Infrastructure",
+      "Product & Ops Integration",
+      "Use Case & Value Realisation",
+      "Talent & AI Culture",
+      "Ecosystem & Benchmarking"
+    ],
+    gapMessages: [
+      "Product, engineering, and commercial leadership may not share clarity on AI priorities across platform features, content intelligence, and customer products — misalignment here means AI bets are placed reactively rather than strategically.",
+      "Without AI-specific product governance, recommendation models, content moderation systems, and generative AI features carry unmanaged bias, safety, regulatory (DSA, IT Rules 2021, DPDP), and reputational risk at scale.",
+      "Your user behaviour, content, telemetry, and training data may not be production-ready for AI. Poor data lineage, inconsistent feature pipelines, and lack of model versioning are the most common causes of ICT AI failure at scale.",
+      "AI capabilities may not be systematically embedded in product features, content workflows, or customer-facing operations. Moving from model experiment to a reliable, monitored production feature requires explicit product and process discipline.",
+      "It may be difficult to distinguish between AI capabilities generating measurable product impact — engagement uplift, churn reduction, content yield improvement, cost-per-interaction reduction — and those that remain internal experiments.",
+      "Product managers, content teams, and go-to-market functions may lack the AI literacy to define, brief, evaluate, and responsibly deploy AI features — a critical gap as AI becomes a core product capability rather than a data science function.",
+      "Dependence on hyperscaler AI APIs and platform AI tooling without independent capability benchmarking risks an AI roadmap shaped by vendor availability rather than your product and competitive strategy.",
+    ],
+    questions: [
+      { dim:1, dimName:"Strategic AI Intent",              text:"Our product, engineering, and commercial leadership share a documented view of which AI capabilities to build, buy, and partner on — across platform features, content intelligence, and customer products — for this financial year." },
+      { dim:1, dimName:"Strategic AI Intent",              text:"We have defined what AI will not be deployed in without additional review (e.g. generative AI in content publishing, autonomous moderation decisions) and this is understood across product, engineering, policy, and commercial teams." },
+      { dim:2, dimName:"AI Product Governance & Risk",     text:"We have an AI-specific product governance framework covering model fairness, content safety obligations, and regulatory requirements (DSA, IT Rules 2021, DPDP, copyright obligations for generative AI)." },
+      { dim:2, dimName:"AI Product Governance & Risk",     text:"Every AI capability in production — including recommendation engines, content moderation, personalisation, and generative AI features — has a defined product owner, live monitoring plan, and rollback or override protocol." },
+      { dim:3, dimName:"Data & Model Infrastructure",      text:"We have assessed the production-readiness of our user behaviour data, content metadata, telemetry pipelines, and model training infrastructure — including data lineage, feature store maturity, and model versioning practices." },
+      { dim:3, dimName:"Data & Model Infrastructure",      text:"Our data infrastructure supports reliable, reproducible AI development — with structured pipelines for use cases such as content recommendation, churn prediction, dynamic pricing, and LLM-powered product features." },
+      { dim:4, dimName:"Product & Ops Integration",        text:"AI capabilities are systematically integrated into product features and operational workflows — not just shipped as experiments — with defined success metrics, monitoring, and rollback procedures for each capability in production." },
+      { dim:5, dimName:"Use Case & Value Realisation",     text:"We can clearly distinguish between AI capabilities generating measurable product or business value (engagement uplift, churn reduction, content yield, cost-per-interaction) and those still running as internal experiments or unmonitored features." },
+      { dim:6, dimName:"Talent & AI Culture",              text:"Product managers, content teams, and go-to-market functions — not just engineering and data science — have sufficient AI literacy to define, evaluate, and responsibly shape AI features as core product capabilities." },
+      { dim:7, dimName:"Ecosystem & Benchmarking",         text:"We benchmark our AI capability maturity against peer technology companies and digital media organisations on a structured, periodic basis — beyond the benchmarks provided by our hyperscaler and platform AI partners." },
+    ],
+  },
+};
