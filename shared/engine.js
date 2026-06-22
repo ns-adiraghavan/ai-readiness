@@ -11,7 +11,7 @@
   if (introCard) {
     introCard.innerHTML = `
       <div class="badge">${cfg.badgeText}</div>
-      <h1 class="intro-h1">${cfg.heroHeadline}<span class="red-dot"></span></h1>
+      <h1 class="intro-h1">${cfg.heroHeadline}?<span class="red-dot"></span></h1>
       <p class="intro-sub">${cfg.heroSub}</p>
       <div class="meta-strip">
         <div class="meta-item"><div class="meta-label">Questions</div><div class="meta-val">10</div></div>
