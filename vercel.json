@@ -1,10 +1,11 @@
 {
+  "outputDirectory": ".",
   "rewrites": [
-    { "source": "/",            "destination": "/base/index.html" },
-    { "source": "/bfsi",        "destination": "/bfsi/index.html" },
-    { "source": "/automotive",  "destination": "/automotive/index.html" },
-    { "source": "/retail",      "destination": "/retail/index.html" },
-    { "source": "/healthcare",  "destination": "/healthcare/index.html" },
-    { "source": "/ict",         "destination": "/ict/index.html" }
+    { "source": "/",           "destination": "/base/index.html" },
+    { "source": "/bfsi",       "destination": "/bfsi/index.html" },
+    { "source": "/automotive", "destination": "/automotive/index.html" },
+    { "source": "/retail",     "destination": "/retail/index.html" },
+    { "source": "/healthcare", "destination": "/healthcare/index.html" },
+    { "source": "/ict",        "destination": "/ict/index.html" }
   ]
 }
