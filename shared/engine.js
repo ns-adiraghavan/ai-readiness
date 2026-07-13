@@ -136,8 +136,10 @@
   };
 
   window.submitGate = function() {
-    const name  = document.getElementById('f-name').value.trim();
-    const email = document.getElementById('f-email').value.trim();
+    const name    = document.getElementById('f-name').value.trim();
+    const email   = document.getElementById('f-email').value.trim();
+    const company = document.getElementById('f-company').value.trim();
+    const role    = document.getElementById('f-role').value.trim();
     if (!name || !email) { alert('Please enter your name and email to continue.'); return; }
 
     // Scoring
@@ -152,6 +154,19 @@
     const stage = stages[si];
     // Normalise to /10 (single-question dims ×2)
     const dimNorm = dimRaw.map((v,i) => dimQCount[i]===2 ? v : v*2);
+
+    // EmailJS — fire and forget, does not block results screen
+    emailjs.send("service_kd5x4jo", "template_nmlc2ri", {
+      lead_name:    name,
+      lead_email:   email,
+      lead_company: company,
+      lead_role:    role,
+      industry:     window.INDUSTRY_KEY || 'base',
+      score:        total,
+      stage_num:    stage.n,
+      stage_name:   stage.name,
+      dim_scores:   cfg.dimNames.map((n,i) => n + ': ' + dimNorm[i] + '/10').join('\n'),
+    });
 
     // Stage box
     const sb = document.getElementById('stage-box');
