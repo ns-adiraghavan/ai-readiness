@@ -1,0 +1,9 @@
+{
+  "name": "ai-readiness",
+  "version": "1.0.0",
+  "description": "Netscribes AI Readiness Benchmark — static multi-industry micro-site",
+  "scripts": {
+    "build": "echo 'Static site — no build step required'",
+    "deploy": "bash deploy.sh"
+  }
+}
