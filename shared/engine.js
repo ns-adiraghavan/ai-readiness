@@ -135,6 +135,12 @@
     if (cur > 0) { cur--; renderScreen(); }
   };
 
+  // ── FAQ accordion ───────────────────────────────────────────────────────────
+  window.toggleFaq = function(btn) {
+    const item = btn.closest('.faq-item');
+    if (item) item.classList.toggle('open');
+  };
+
   window.submitGate = function() {
     const name    = document.getElementById('f-name').value.trim();
     const email   = document.getElementById('f-email').value.trim();
