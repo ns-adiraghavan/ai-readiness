@@ -9,6 +9,7 @@ sudo mkdir -p "$DEST/shared" "$DEST/base" "$DEST/automotive" \
 echo "── Copying shared assets ──────────────────────────────────────────"
 sudo cp shared/industry-configs.js "$DEST/shared/"
 sudo cp shared/engine.js           "$DEST/shared/"
+sudo cp shared/styles.css          "$DEST/shared/"
 
 echo "── Copying industry index pages ───────────────────────────────────"
 sudo cp base/index.html        "$DEST/base/"
@@ -23,9 +24,10 @@ sudo chown -R www-data:www-data "$DEST"
 sudo chmod -R 755 "$DEST"
 
 echo "── Installing Nginx config ────────────────────────────────────────"
-# NOTE: If you already have a server block for netscribes.com, copy only
-# the location{} blocks into your existing config rather than installing
-# this as a second server{} block.
+# NOTE: This config serves the site on its own subdomain
+# (aireadiness.netscribes.com). Point DNS for that subdomain at this host
+# and issue a matching TLS cert before reloading nginx:
+#   sudo certbot --nginx -d aireadiness.netscribes.com
 sudo cp nginx-ai-readiness.conf /etc/nginx/sites-available/ai-readiness.conf
 [ ! -L /etc/nginx/sites-enabled/ai-readiness.conf ] && \
   sudo ln -s /etc/nginx/sites-available/ai-readiness.conf /etc/nginx/sites-enabled/
@@ -34,9 +36,9 @@ sudo nginx -t && sudo systemctl reload nginx
 
 echo ""
 echo "✓ Live at:"
-echo "  /ai-readiness/              — All Industries (base)"
-echo "  /ai-readiness/automotive/   — Automotive & Manufacturing"
-echo "  /ai-readiness/bfsi/         — Banking & Insurance"
-echo "  /ai-readiness/retail/       — Retail & Logistics"
-echo "  /ai-readiness/healthcare/   — Life Sciences & Healthcare"
-echo "  /ai-readiness/ict/          — ICT & Media"
+echo "  https://aireadiness.netscribes.com/             — All Industries (base)"
+echo "  https://aireadiness.netscribes.com/automotive/  — Automotive & Manufacturing"
+echo "  https://aireadiness.netscribes.com/bfsi/        — Banking & Insurance"
+echo "  https://aireadiness.netscribes.com/retail/      — Retail & Logistics"
+echo "  https://aireadiness.netscribes.com/healthcare/  — Life Sciences & Healthcare"
+echo "  https://aireadiness.netscribes.com/ict/         — ICT & Media"
